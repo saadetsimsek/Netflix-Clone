@@ -9,7 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    let secrionTitles: [String] = ["Trending Movies", "Popular", "Trending TV", "Upcoming Movies", "Top Rating"]
+    let secrionTitles: [String] = ["Trending Movies","Trending TV", "Popular", "Upcoming Movies", "Top Rating"]
 
     private let homeFeedTableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -34,7 +34,7 @@ class HomeViewController: UIViewController {
                                               height: 450))
         homeFeedTableView.tableHeaderView = headerView
         
-        getTrendingMovies()
+        fetchData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -62,7 +62,7 @@ class HomeViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .systemRed
     }
     
-    private func getTrendingMovies(){
+    private func fetchData(){
         APICaller.shared.getTrendingMovies { results in
             switch results {
             case .success(let movies):
@@ -71,6 +71,16 @@ class HomeViewController: UIViewController {
                 print(failure)
             }
         }
+        
+    
+      /* APICaller.shared.getTrendingTvs { _ in
+            <#code#>
+        }
+        
+        APICaller.shared.getPopular { _ in
+            <#code#>
+        }
+       */
     }
 
 
@@ -111,7 +121,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                                          width: 100,
                                          height: header.bounds.height)
         header.textLabel?.textColor = .black
-        header.textLabel?.text = header.textLabel?.text?.lowercased()
+        header.textLabel?.text = header.textLabel?.text?.lowercased().capitalizeFirstLetter()
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
