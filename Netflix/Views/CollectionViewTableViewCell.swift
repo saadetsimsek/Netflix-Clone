@@ -57,6 +57,18 @@ class CollectionViewTableViewCell: UITableViewCell {
     
     private func downloadTitleAt(indexpath: IndexPath){
         print("Downloading \(titles[indexpath.row].original_title)")
+        
+        DataPersistenceManager.shared.downloadTitleWith(model: titles[indexpath.row]) { result in
+            switch result {
+            case .success(let success):
+               // print("Downloading to Database")
+                NotificationCenter.default.post(name: NSNotification.Name("Downloaded"), object: nil)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
+        
     }
     
 }
